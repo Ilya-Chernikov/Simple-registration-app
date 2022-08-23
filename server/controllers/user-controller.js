@@ -11,7 +11,7 @@ class UserController {
             }
             const {email, password} = req.body;
             const userData = await userService.registration(email, password);
-            res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
+            res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
             return res.json(userData);
         } catch (e) {
             next(e);
@@ -22,7 +22,7 @@ class UserController {
         try {
             const {email, password} = req.body;
             const userData = await userService.login(email, password);
-            res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
+            res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
             return res.json(userData);
         } catch (e) {
             next(e);
@@ -64,7 +64,21 @@ class UserController {
     async getUsers(req, res, next) {
         try {
             const users = await userService.getAllUsers();
-            return res.json(users);
+            return res.json({users});
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    async deleteUserById(req, res, next) {
+        try {
+            const userId = req.query.id;
+            if (!userId) {
+                return next(ApiError.BadRequest('Попытка удаления несуществующего id'))
+            }
+            const result = await userService.deleteUserById(userId);
+            console.log("RESULT", result);
+            return res.json({result});
         } catch (e) {
             next(e);
         }

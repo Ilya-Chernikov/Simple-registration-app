@@ -5,18 +5,19 @@ const mailService = require('./mail-service');
 const tokenService = require('./token-service');
 const UserDto = require('../dtos/user-dto');
 const ApiError = require('../exceptions/api-error');
+const {ObjectId} = require("mongodb");
 
 class UserService {
     async registration(email, password) {
         const candidate = await UserModel.findOne({email})
         if (candidate) {
-            throw ApiError.BadRequest(`Пользователь с почтовым адресом ${email} уже существует`)
+            throw ApiError.EmaiIsAlreadyInUse(email)
         }
         const hashPassword = await bcrypt.hash(password, 3);
         const activationLink = uuid.v4(); // v34fa-asfasf-142saf-sa-asf
 
         const user = await UserModel.create({email, password: hashPassword, activationLink})
-        await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`);
+        // await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`);
 
         const userDto = new UserDto(user); // id, email, isActivated
         const tokens = tokenService.generateTokens({...userDto});
@@ -75,6 +76,13 @@ class UserService {
     async getAllUsers() {
         const users = await UserModel.find();
         return users;
+    }
+
+    async deleteUserById(id){
+        const candidate = await UserModel.findOne({"_id": ObjectId(id)});
+        if(!candidate)  throw ApiError.BadRequest('Пользователь с таким id не найден');
+        const u = await UserModel.deleteOne({"_id": ObjectId(id)});
+        const y = await tokenService.deleteTokenByUserId(id);
     }
 }
 

@@ -1,10 +1,14 @@
 const jwt = require('jsonwebtoken');
 const tokenModel = require('../models/token-model');
+const expiresTime = {
+    accessToken:"15s",
+    refreshToken:"30d"
+}
 
 class TokenService {
     generateTokens(payload) {
-        const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {expiresIn: '15s'})
-        const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {expiresIn: '30s'})
+        const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {expiresIn: expiresTime.accessToken});
+        const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {expiresIn: expiresTime.refreshToken});
         return {
             accessToken,
             refreshToken
@@ -46,6 +50,11 @@ class TokenService {
 
     async findToken(refreshToken) {
         const tokenData = await tokenModel.findOne({refreshToken})
+        return tokenData;
+    }
+
+    async deleteTokenByUserId(id){
+        const tokenData = await tokenModel.deleteOne({user: id});
         return tokenData;
     }
 }
