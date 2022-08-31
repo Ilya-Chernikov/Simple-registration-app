@@ -7,18 +7,23 @@ import {RegisterPage} from "./Pages/Register/RegisterPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {MainPage} from "./Pages/MainPage/MainPage";
 import {LoginPageWithAuth} from "./Pages/Login/LoginPageWithAuth";
+import CssBaseline from '@mui/material/CssBaseline';
+import {RegisterPageWithAuth} from "./Pages/Register/RegisterPageWithAuth";
 
 export const App = () => {
   return (
-      <Provider store={store}>
-          <BrowserRouter>
-              <Routes>
-                  <Route path="main" element={<MainPage/>}/>
-                  <Route path="registration" element={<RegisterPage/>}/>
-                  <Route path="login" element={<LoginPageWithAuth/>}/>
-                  <Route path="users" element={<UsersPage/>}/>
-              </Routes>
-          </BrowserRouter>
-      </Provider>
+    <>
+        <CssBaseline />
+        <Provider store={store}>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="main" element={<MainPage/>}/>
+                    <Route path="registration" element={<RegisterPageWithAuth/>}/>
+                    <Route path="login" element={<LoginPageWithAuth/>}/>
+                    <Route path="users" element={<UsersPage/>}/>
+                </Routes>
+            </BrowserRouter>
+        </Provider>
+    </>
   )
 }

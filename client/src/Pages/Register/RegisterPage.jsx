@@ -4,14 +4,12 @@ import {LoginForm} from "../../Components/LoginForm/LoginForm";
 import {WithAuthorize} from "../../HOC/WithAuthorize";
 import {ControlPage} from "../ControlPage/ControlPage";
 import {LoginPage} from "../Login/LoginPage";
+import {Layout} from "../../Components/Layout/Layout";
 export const RegisterPage = () => {
     return (
-        <div>
-            <h2>Добрый день!</h2>
-            <h3>Зарегистрируйтесь или <Link to="/login">Войдите</Link></h3>
-            <Link to="/main">Main page</Link>
+        <Layout>
             <RegisterForm/>
-        </div>
+        </Layout>
     )
 }
 

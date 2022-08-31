@@ -7,8 +7,8 @@ import {Layout} from "../../Components/Layout/Layout";
 export const MainPage = () => {
   const content = WithAuthorize({ComponentForAuthorized:ControlPage, ComponentForUnauthorized:LoginPage})();
   return (
-      <Layout>
-        {content}
-      </Layout>
+        <>
+          {content}
+        </>
   )
 }
