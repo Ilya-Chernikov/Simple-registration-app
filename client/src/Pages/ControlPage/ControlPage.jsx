@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {Logout} from "../../store/User/thunks/logout";
+import {Logout} from "../../store/Entities/User/thunks/logout";
 
 export const ControlPage = () => {
     const dispatch = useDispatch();

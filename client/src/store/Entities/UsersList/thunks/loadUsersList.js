@@ -1,5 +1,5 @@
 import {usersListActions} from "../usersListSlice";
-import {$api} from "../../../http";
+import {$api} from "../../../../http";
 
 export const loadUsersList = ()=>(dispatch, getState) => {
     $api.get('/users')

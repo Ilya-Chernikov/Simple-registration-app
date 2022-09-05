@@ -1,11 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import {userReducer} from "./User/userSclice";
-import {usersListReducer} from "./UsersList/usersListSlice";
-import {selectUserModule} from "./User/selectors";
-import {selectUsersListModule} from "./UsersList/selectors";
+import {userReducer} from "./Entities/User/userSclice";
+import {usersListReducer} from "./Entities/UsersList/usersListSlice";
+import {selectUserModule} from "./Entities/User/selectors";
+import {selectUsersListModule} from "./Entities/UsersList/selectors";
+import {entitiesReducer} from "./Entities/reducer";
+import {selectEntitiesModule} from "./Entities/selectors";
+import {uiReducer} from "./UI/reducer";
+import {selectUiModule} from "./UI/selectors";
 const rootReducer = (state = {}, action = {}) => ({
-    user: userReducer(selectUserModule(state), action),
-    usersList: usersListReducer(selectUsersListModule(state), action)
+ entities:entitiesReducer(selectEntitiesModule(state), action),
+ ui: uiReducer(selectUiModule(state), action)
 });
 
 export const store = configureStore({

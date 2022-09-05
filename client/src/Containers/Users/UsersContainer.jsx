@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
-import {loadUsersList} from "../store/UsersList/thunks/loadUsersList";
-import {Users} from "../Components/Users/Users";
-import {selectAllUsers, selectUsersListModule} from "../store/UsersList/selectors";
+import {loadUsersList} from "../../store/Entities/UsersList/thunks/loadUsersList";
+import {Users} from "../../Components/Users/Users";
+import {selectAllUsers, selectUsersListModule} from "../../store/Entities/UsersList/selectors";
 import {useEffect} from "react";
 
 export const UsersContainer = () => {

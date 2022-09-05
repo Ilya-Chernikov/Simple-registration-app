@@ -9,6 +9,7 @@ import {MainPage} from "./Pages/MainPage/MainPage";
 import {LoginPageWithAuth} from "./Pages/Login/LoginPageWithAuth";
 import CssBaseline from '@mui/material/CssBaseline';
 import {RegisterPageWithAuth} from "./Pages/Register/RegisterPageWithAuth";
+import {SnackBarContainer} from "./Containers/SnackBar/SnackBarContainer";
 
 export const App = () => {
   return (
@@ -23,6 +24,7 @@ export const App = () => {
                     <Route path="users" element={<UsersPage/>}/>
                 </Routes>
             </BrowserRouter>
+            <SnackBarContainer/>
         </Provider>
     </>
   )

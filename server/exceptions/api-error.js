@@ -1,26 +1,35 @@
 module.exports = class ApiError extends Error {
     status;
-    errors;
+    customStatus
 
-    constructor(status, message, errors = []) {
+    constructor(status, message, customStatus) {
         super(message);
         this.status = status;
-        this.errors = errors;
+        this.customStatus = customStatus;
     }
 
-    static UnauthorizedError() {
-        return new ApiError(401, 'Пользователь не авторизован')
+    static BadRequest(message, customStatus) {
+        return new ApiError(400, message, customStatus);
     }
+
+    // static UnauthorizedError() {
+    //     return new ApiError(401, 'Пользователь не авторизован')
+    // }
+
+    // static NoUser() {
+    //     return new ApiError(402, 'Неверный пароль или логин')
+    // }
+
+    // static IncorrectPassword() {
+    //     return new ApiError(403, 'Неверный пароль')
+    // }
 
     static BadAccessToken () {
         return new ApiError(408, "Сессия истекла")
     }
 
-    static EmaiIsAlreadyInUse(email) {
-        return new ApiError(409, `Пользователь с почтовым адресом ${email} уже существует`)
-    }
+    // static EmaiIsAlreadyInUse(email) {
+    //     return new ApiError(409, `Пользователь с почтовым адресом ${email} уже существует`)
+    // }
 
-    static BadRequest(message, errors = []) {
-        return new ApiError(400, message, errors);
-    }
 }

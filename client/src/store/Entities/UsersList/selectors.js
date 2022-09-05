@@ -1,4 +1,6 @@
-export const selectUsersListModule = (state) => state.usersList;
+import {selectEntitiesModule} from "../selectors";
+
+export const selectUsersListModule = (state) => selectEntitiesModule(state)?.usersList;
 export const selectUsersEntities = (state) => {
   return selectUsersListModule(state).entities;
 }

@@ -1,4 +1,4 @@
-import {$api} from "../../../http";
+import {$api} from "../../../../http";
 import {loadUsersList} from "./loadUsersList";
 
 export const deleteUserById = (id) => (dispatch, getState) => {

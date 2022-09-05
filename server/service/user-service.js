@@ -6,12 +6,15 @@ const tokenService = require('./token-service');
 const UserDto = require('../dtos/user-dto');
 const ApiError = require('../exceptions/api-error');
 const {ObjectId} = require("mongodb");
+const {errorsStatus} = require("../SharedData/sharedData");
+
+
 
 class UserService {
     async registration(email, password) {
         const candidate = await UserModel.findOne({email})
         if (candidate) {
-            throw ApiError.EmaiIsAlreadyInUse(email)
+            throw ApiError.BadRequest(`Пользователь ${email} уже сущетсвует`,  errorsStatus.alreadyExists)
         }
         const hashPassword = await bcrypt.hash(password, 3);
         const activationLink = uuid.v4(); // v34fa-asfasf-142saf-sa-asf
@@ -38,11 +41,11 @@ class UserService {
     async login(email, password) {
         const user = await UserModel.findOne({email})
         if (!user) {
-            throw ApiError.BadRequest('Пользователь с таким email не найден')
+            throw ApiError.BadRequest("Неверный пароль или логин",errorsStatus.incorrectEmailOrPassword)
         }
         const isPassEquals = await bcrypt.compare(password, user.password);
         if (!isPassEquals) {
-            throw ApiError.BadRequest('Неверный пароль');
+            throw ApiError.BadRequest("Неверный пароль",errorsStatus.incorrectPassword);
         }
         const userDto = new UserDto(user);
         const tokens = tokenService.generateTokens({...userDto});
@@ -58,12 +61,12 @@ class UserService {
 
     async refresh(refreshToken) {
         if (!refreshToken) {
-            throw ApiError.UnauthorizedError();
+            throw ApiError.BadRequest(`Пользователь не авторизован`, errorsStatus.unauthorized)
         }
         const userData = tokenService.validateRefreshToken(refreshToken);
         const tokenFromDb = await tokenService.findToken(refreshToken);
         if (!userData || !tokenFromDb) {
-            throw ApiError.UnauthorizedError();
+            throw ApiError.BadRequest(`Пользователь не авторизован`, errorsStatus.unauthorized)
         }
         const user = await UserModel.findById(userData.id);
         const userDto = new UserDto(user);
@@ -80,7 +83,7 @@ class UserService {
 
     async deleteUserById(id){
         const candidate = await UserModel.findOne({"_id": ObjectId(id)});
-        if(!candidate)  throw ApiError.BadRequest('Пользователь с таким id не найден');
+        if(!candidate)  throw ApiError.BadRequest('Пользователь с таким id не найден', errorsStatus.noUserWithThisId);
         const u = await UserModel.deleteOne({"_id": ObjectId(id)});
         const y = await tokenService.deleteTokenByUserId(id);
     }

@@ -1,7 +1,7 @@
 import styles from "./styles.module.css";
 import {useCallback} from "react";
 import {useDispatch} from "react-redux";
-import {deleteUserById} from "../../store/UsersList/thunks/deleteUserById";
+import {deleteUserById} from "../../store/Entities/UsersList/thunks/deleteUserById";
 
 export const Users = ({usersList}) => {
   const dispatch = useDispatch();
